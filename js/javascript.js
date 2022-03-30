@@ -9,3 +9,12 @@ $.getJSON(`http://sandbox.gibm.ch/klassen.php`, function (data) {
         $('#group').append(`<option value='${element.klasse_id}'>${element.klasse_longname}</option>`)
     });
 });
+
+$("#job").change(function () {
+    $.getJSON(`http://sandbox.gibm.ch/klassen.php?beruf_id=${$('#job').val()}`, function (data) {
+        $('#group').html('');
+        data.forEach(element => {
+            $('#group').append(`<option value='${element.klasse_id}'>${element.klasse_longname}</option>`)
+        });
+    });
+});
