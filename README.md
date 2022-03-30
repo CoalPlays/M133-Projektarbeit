@@ -1,7 +1,7 @@
 # M133-Projektarbeit
 Projektarbeit für das Modul 133
 
-#Ausgangslage:
+# Ausgangslage:
 Sie erhalten den Auftrag, eine Webapplikation zur Ansicht eines Stundenplans Ihrer Schule zu
 entwickeln. Die komplette Webapplikation muss clientseitig realisiert werden. Es stehen Ihnen alle
 aktuellen clientseitigen Web-Technologien zur Verfügung.
