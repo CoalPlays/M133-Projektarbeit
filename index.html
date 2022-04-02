@@ -10,17 +10,21 @@
 </head>
 <body>
     <h1 class="mx-5 mt-5">Stundenplan GIBM</h1>
+
+    <div>
+        <h3 class="mx-5 my-2">Berufsgruppe</h3>
+        <select name="job" id="job" class="form-select mx-5 my-1 w-50" title="test">
+            <option value="0">Wähle den Beruf aus</option>
+        </select>
+    </div>
+
+    <div id="classes" style="display: none;">
+        <h3 class="mx-5 my-2">Klasse</h3>
+        <select name="group" id="group" class="form-select mx-5 my-1 w-50" from-control>
+            <option value="">Wähle die Klasse aus</option>
+        </select>
+    </div>
     
-    <h3 class="mx-5 my-2">Berufsgruppe</h3>
-    <select name="job" id="job" class="form-select mx-5 my-1 w-50" title="test">
-        <option value="0">Wähle den Beruf aus</option>
-    </select>
-
-    <h3 class="mx-5 my-2">Berufsgruppe</h3>
-    <select name="group" id="group" class="form-select mx-5 my-1 w-50" from-control>
-        <option value="">Wähle die Klasse aus</option>
-    </select>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="js/javascript.js"></script>
 </body>
