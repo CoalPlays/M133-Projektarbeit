@@ -13,9 +13,9 @@
     </head>
     <body class="col-xs-1 center-block justify-content text-center m-5">
         <h1>Stundenplan GIBM</h1>
-        <div class="mb-4">
+        <div id="jobs" class="mb-4">
             <h3 class="m-3">Berufsgruppe</h3>
-            <select name="job" id="job" class="form-select w-25 mx-auto"
+            <select name="job" id="job" class="form-select w-75 mx-auto"
                 title="test">
                 <option value="0">Wähle den Beruf aus</option>
             </select>
@@ -24,7 +24,7 @@
 
         <div id="classes" class="m" style="display: none;">
             <h3 class="m-3">Klasse</h3>
-            <select name="group" id="group" class="form-select mx-auto w-25"
+            <select name="group" id="group" class="form-select mx-auto w-75"
                 from-control>
                 <option value="">Wähle die Klasse aus</option>
             </select>
@@ -37,8 +37,8 @@
                 <button id="date" type="button" class="btn btn-secondary" disabled></button>
                 <button id="add" type="button" class="btn btn-primary">⋙</button>
             </div>
-            <div id="schedule" style="display: none">
-                <table class="table w-75 mx-auto">
+            <div id="schedule" class="table-responsive" style="display: none">
+                <table class="table w-75 mx-auto table-bordered table-sm">
                     <thead class="table-dark">
                         <tr>
                             <th>Datum</th>
@@ -54,7 +54,18 @@
                     </tbody>
                 </table>
             </div>
-            
+        </div>
+
+        <div id="noData" style="display: none;">
+            <img src="images/error.png" alt="" style="height: 350px;"><p>Keine Daten gefunden</p>
+        </div>
+
+        <div id="error" style="display: none;">
+            <img src="images/error.png" alt="" style="height: 350px;"><p>Es gab einen Fehler</p>
+        </div>
+
+        <div id="loading" style="display: none;">
+            <img src="images/loading.gif" alt="" style="height: 350px;">
         </div>
 
         <script

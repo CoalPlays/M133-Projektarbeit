@@ -4,10 +4,10 @@ let date = moment();
 $(() => {
     getJobs();
     getGroups(localStorage.getItem('job'));
-    if(localStorage.getItem('group') != null) {
+    if (localStorage.getItem('group') != null) {
         getTable(localStorage.getItem('group'))
         $("#schedule").css('display', "block");
-        $("#calendarWeek").css('display', "block");    
+        $("#calendarWeek").css('display', "block");
     }
 })
 
@@ -27,15 +27,16 @@ $("#group").change(function () {
 
 $("#add").click(function () {
     addWeek();
-    getTable( $("#group").val());
+    getTable($("#group").val());
 });
 
 $("#subtract").click(function () {
     subtractWeek();
-    getTable( $("#group").val());
+    getTable($("#group").val());
 });
 
 function getJobs() {
+    $("#loading").css('display', "block");
     $.getJSON("http://sandbox.gibm.ch/berufe.php", function (data) {
         data.forEach(element => {
             let selectedjob = false
@@ -45,41 +46,75 @@ function getJobs() {
             }
             $('#job').append(`<option value='${element.beruf_id}' ${selectedjob == true ? "selected" : ""}>${element.beruf_name}</option>`)
         });
-    });
+    }).fail(function () {
+        $("#error").css('display', "block");
+        $("#table").css('display', "none");
+        $("#classes").css('display', "none");
+        $("#jobs").css('display', "none");
+        $("#noData").css('display', "none");
+    });;
+    $("#loading").css('display', "none");
 };
 
 function getGroups(val) {
+    $("#loading").css('display', "block");
     $.getJSON(`http://sandbox.gibm.ch/klassen.php${val == null ? '' : '?beruf_id=' + val}`, function (data) {
         $('#group').html('');
         $('#group').html('<option>Wähle deine Klasse aus</option>');
-        data.forEach(element => {
-            let selectedGroup = false
-            if (localStorage.getItem('group') == element.klasse_id) {
-                selectedGroup = true;
-            }
-            $('#group').append(`<option value='${element.klasse_id}' ${selectedGroup == true ? "selected" : ""}>${element.klasse_longname}</option>`)
-        });
+        if (data == 0) {
+            $("#noData").css('display', "block");
+            $("#schedule").css('display', "none");
+        } else {
+            data.forEach(element => {
+                let selectedGroup = false
+                if (localStorage.getItem('group') == element.klasse_id) {
+                    selectedGroup = true;
+                }
+                $('#group').append(`<option value='${element.klasse_id}' ${selectedGroup == true ? "selected" : ""}>${element.klasse_longname}</option>`)
+            });
+        }
+    }).fail(function () {
+        $("#error").css('display', "block");
+        $("#table").css('display', "none");
+        $("#classes").css('display', "none");
+        $("#noData").css('display', "none");
     });
+    $("#loading").css('display', "none");
 };
 
 function getTable(val) {
-    const week = `${getCalendarWeek(date)}-${getYear(date)}`
+    $("#loading").css('display', "block");
+    $("#schedule").css('display', "block");
+    $("#table").css('display', "block");
+    const week = `${getCalendarWeek(date)}-${getYear(date)}`;
     $("#date").html(`${getCalendarWeek(date)}-${getYear(date)}`)
     $.getJSON(`http://sandbox.gibm.ch/tafel.php?klasse_id=${val}&woche=${week}`, function (data) {
         $('#tableBody').html('');
-        data.forEach(element => {
-            $('#tableBody').append(`
-            <tr>
-                <td>${moment(element.tafel_datum).format('DD.MM.YYYY')}</td>
-                <td>${days[element.tafel_wochentag]}</td>
-                <td>${moment(element.tafel_von,'h:mm').format('HH:mm')}</td>
-                <td>${moment(element.tafel_bis,'h:mm').format('HH:mm')}</td>
-                <td>${element.tafel_lehrer}</td>
-                <td>${element.tafel_longfach}</td>
-                <td>${element.tafel_raum}</td>
-            </tr>`)
-        });
-    });
+        if (data == 0) {
+            $("#noData").css('display', "block");
+            $("#schedule").css('display', "none");
+        } else {
+            data.forEach(element => {
+                $("#noData").css('display', "none");
+                $('#tableBody').append(`
+                <tr>
+                    <td>${moment(element.tafel_datum).format('DD.MM.YYYY')}</td>
+                    <td>${days[element.tafel_wochentag]}</td>
+                    <td>${moment(element.tafel_von, 'h:mm').format('HH:mm')}</td>
+                    <td>${moment(element.tafel_bis, 'h:mm').format('HH:mm')}</td>
+                    <td>${element.tafel_lehrer}</td>
+                    <td>${element.tafel_longfach}</td>
+                    <td>${element.tafel_raum}</td>
+                </tr>`)
+            });
+        }
+    }).fail(function () {
+        $("#error").css('display', "block");
+        $("#schedule").css('display', "none");
+        $("#noData").css('display', "none");
+
+    });;
+    $("#loading").css('display', "none");
 };
 
 function getCalendarWeek(date) {
