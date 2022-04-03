@@ -27,12 +27,36 @@ $("#group").change(function () {
 
 $("#add").click(function () {
     addWeek();
+    $("#schedule").animate({
+        marginRight: '1000px',
+        opacity: '0'
+      });
     getTable($("#group").val());
+    $("#schedule").animate({
+        marginRight: '0',
+        marginLeft: '1000px'
+      }, "fast");
+    $("#schedule").animate({
+        marginLeft: '0',
+        opacity: '1'
+      });
 });
 
 $("#subtract").click(function () {
     subtractWeek();
+    $("#schedule").animate({
+        marginLeft: '1000px',
+        opacity: '0'
+      });
     getTable($("#group").val());
+    $("#schedule").animate({
+        marginLeft: '0',
+        marginRight: '1000px'
+      }, "fast");
+    $("#schedule").animate({
+        marginRight: '0',
+        opacity: '1'
+      });
 });
 
 function getJobs() {
@@ -73,7 +97,8 @@ function getGroups(val) {
                 $('#group').append(`<option value='${element.klasse_id}' ${selectedGroup == true ? "selected" : ""}>${element.klasse_longname}</option>`)
             });
         }
-    }).fail(function () {
+    }).fail(function (e) {
+        console.log(e);
         $("#error").css('display', "block");
         $("#table").css('display', "none");
         $("#classes").css('display', "none");
@@ -86,6 +111,7 @@ function getTable(val) {
     $("#loading").css('display', "block");
     $("#schedule").css('display', "block");
     $("#table").css('display', "block");
+    $("#error").css('display', "none");
     const week = `${getCalendarWeek(date)}-${getYear(date)}`;
     $("#date").html(`${getCalendarWeek(date)}-${getYear(date)}`)
     $.getJSON(`http://sandbox.gibm.ch/tafel.php?klasse_id=${val}&woche=${week}`, function (data) {
