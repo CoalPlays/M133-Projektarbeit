@@ -1,6 +1,8 @@
+// Variables
 const days = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
 let date = moment();
 
+// when dom is loaded
 $(() => {
     getJobs();
     getGroups(localStorage.getItem('job'));
@@ -11,6 +13,7 @@ $(() => {
     }
 })
 
+// when job gets selected
 $("#job").change(function () {
     getGroups($('#job').val())
     localStorage.setItem('job', $("#job").val());
@@ -18,13 +21,16 @@ $("#job").change(function () {
     $("#classes").css('display', "block");
 });
 
+// when class gets selected
 $("#group").change(function () {
+    date = moment();
     localStorage.setItem('group', $("#group").val());
     getTable($("#group").val());
     $("#schedule").css('display', "block");
     $("#calendarWeek").css('display', "block");
 });
 
+// go to next week
 $("#add").click(function () {
     addWeek();
     $("#schedule").animate({
@@ -42,6 +48,7 @@ $("#add").click(function () {
       });
 });
 
+// go to last week
 $("#subtract").click(function () {
     subtractWeek();
     $("#schedule").animate({
@@ -59,6 +66,7 @@ $("#subtract").click(function () {
       });
 });
 
+// loads jobs
 function getJobs() {
     $("#loading").css('display', "block");
     $.getJSON("http://sandbox.gibm.ch/berufe.php", function (data) {
@@ -80,6 +88,7 @@ function getJobs() {
     $("#loading").css('display', "none");
 };
 
+// loads class
 function getGroups(val) {
     $("#loading").css('display', "block");
     $.getJSON(`http://sandbox.gibm.ch/klassen.php${val == null ? '' : '?beruf_id=' + val}`, function (data) {
@@ -107,6 +116,7 @@ function getGroups(val) {
     $("#loading").css('display', "none");
 };
 
+// loads table
 function getTable(val) {
     $("#loading").css('display', "block");
     $("#schedule").css('display', "block");
